@@ -1,0 +1,7 @@
+mkdir backend
+cd backend
+python -m venv venv
+# Activa el entorno virtual (en windows: venv\Scripts\activate)
+pip install fastapi uvicorn
+# Crea el archivo main.py con el código de arriba
+uvicorn app.main:app --reload  # Esto enciende el servidor
