@@ -1,0 +1,7 @@
+npm create vite@latest frontend -- --template react
+cd frontend
+npm install
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+# (Aquí configuras Tailwind copiando 2 lineas en tailwind.config.js)
+npm run dev
