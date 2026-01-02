@@ -1,0 +1,46 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import List
+import random
+from datetime import datetime
+
+app = FastAPI(title="COPOLT API v1")
+
+# Configuración de seguridad (CORS) para permitir que la Web App se conecte
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # En producción, pon aquí el dominio real
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Modelo de datos estricto
+class LecturaSensor(BaseModel):
+    sector: str
+    temperatura: float
+    humedad: float
+    estado: str
+    timestamp: datetime
+
+@app.get("/api/dashboard/live", response_model=List[LecturaSensor])
+async def get_live_metrics():
+    """Endpoint que consume el Dashboard en tiempo real"""
+    # Aquí conectarías con tu Base de Datos real. Simulamos para el demo:
+    return [
+        {
+            "sector": "Galpón Cerdos 01",
+            "temperatura": round(random.uniform(22, 28), 1),
+            "humedad": round(random.uniform(40, 60), 1),
+            "estado": "OPTIMO",
+            "timestamp": datetime.now()
+        },
+        {
+            "sector": "Incubadora Aves",
+            "temperatura": round(random.uniform(36, 38), 1),
+            "humedad": round(random.uniform(50, 55), 1),
+            "estado": "ALERTA" if random.random() > 0.8 else "NORMAL",
+            "timestamp": datetime.now()
+        }
+    ]
